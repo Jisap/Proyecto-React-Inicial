@@ -1,7 +1,6 @@
-
 import { createContext, ReactElement } from 'react';
 import { useProduct } from '../hooks/useProduct';
-import { Product, ProductContextProps } from '../interfaces/interfaces';
+import { onChangeArgs, Product, ProductContextProps } from '../interfaces/interfaces';
 import styles from '../styles/styles.module.css';
 
 
@@ -13,13 +12,15 @@ export interface Props {                            // Interface para las Props 
   product: Product;                                     // Producto que se va a mostrar   
   children?: ReactElement | ReactElement[];             // Elementos que se van a mostrar dentro del ProductCard
   className?: string;                                   // Clase que se va a aplicar al ProductCard
-  style?: React.CSSProperties;                           // Estilos que se van a aplicar al ProductCard
+  style?: React.CSSProperties;                          // Estilos que se van a aplicar al ProductCard
+  onChange?: (args: onChangeArgs) => void;              // Función que se va a ejecutar cuando se cambie la cantidad de producto
+  value?: number;
 }
 
-export const ProductCard = ({ children, product, className, style }: Props ) => {
+export const ProductCard = ({ children, product, className, style, onChange, value }: Props ) => {
 
-  const { counter, increaseBy } = useProduct()
-
+  const { counter, increaseBy } = useProduct({ onChange, product, value }); // Este hook recibe una función onChange y devuelve un objeto con dos propiedades: counter y increaseBy  
+                                                                            // onChange es la función que se va a ejecutar cuando se cambie la cantidad de producto 
   return (
     <Provider value={{
         counter, increaseBy, product

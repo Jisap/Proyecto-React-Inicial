@@ -23,3 +23,12 @@ export interface ProductCardHOCProps {                                  // Inter
     Buttons: ( Props: ProductButtonsProps ) => JSX.Element,             // tipo para ProductButtons
     Image:   ( Props: ProdcutImgProps )     => JSX.Element,
 }
+
+export interface onChangeArgs{ // Argumentos que el onChange va a recibir
+    product: Product;
+    count: number;
+}
+
+export interface ProductInCart extends Product { //Esta interface contiene todos los campos de Product, pero con una propiedad extra que indica si el producto está en el carrito
+    count: number
+}
