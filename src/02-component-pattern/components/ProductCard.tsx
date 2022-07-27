@@ -1,6 +1,6 @@
 import { createContext, ReactElement } from 'react';
 import { useProduct } from '../hooks/useProduct';
-import { onChangeArgs, Product, ProductContextProps } from '../interfaces/interfaces';
+import { InitialValues, onChangeArgs, Product, ProductCardHandlers, ProductContextProps } from '../interfaces/interfaces';
 import styles from '../styles/styles.module.css';
 
 
@@ -10,26 +10,39 @@ const { Provider } = ProductContext;
 
 export interface Props {                            // Interface para las Props del ProductCard
   product: Product;                                     // Producto que se va a mostrar   
-  children?: ReactElement | ReactElement[];             // Elementos que se van a mostrar dentro del ProductCard
   className?: string;                                   // Clase que se va a aplicar al ProductCard
   style?: React.CSSProperties;                          // Estilos que se van a aplicar al ProductCard
   onChange?: (args: onChangeArgs) => void;              // Función que se va a ejecutar cuando se cambie la cantidad de producto
   value?: number;
-}
+  initialValues?: InitialValues                         // Valores iniciales para el counter
+  children: (args: ProductCardHandlers) => JSX.Element; // Función que se va a ejecutar para mostrar los elementos que se le pasan como children        
+}                                                       // sus argumentos son 
 
-export const ProductCard = ({ children, product, className, style, onChange, value }: Props ) => {
+export const ProductCard = ({ children, product, className, style, onChange, value, initialValues }: Props ) => {
 
-  const { counter, increaseBy } = useProduct({ onChange, product, value }); // Este hook recibe una función onChange y devuelve un objeto con dos propiedades: counter y increaseBy  
-                                                                            // onChange es la función que se va a ejecutar cuando se cambie la cantidad de producto 
+  const { 
+    counter, 
+    increaseBy, 
+    maxCount, 
+    isMaxCountReached, 
+    reset } = useProduct({ onChange, product, value, initialValues }); 
+                                                                            
   return (
     <Provider value={{
-        counter, increaseBy, product
+        counter, increaseBy, product, maxCount
     }}>
         <div className={ `${ styles.productCard } ${ className }` }
              style={ style }
         >
 
-            { children }
+            { children({
+                  count: counter,
+                  isMaxCountReached, 
+                  maxCount: initialValues?.maxCount,
+                  product, 
+                  increaseBy, 
+                  reset
+            }) }
                 
         </div>
     </Provider>
