@@ -13,7 +13,8 @@ export const useProduct = ( { onChange, product, value = 0, initialValues }:useP
     const [counter, setCounter] = useState<number>( initialValues?.count || value );            // El valor inicial del counter es el initialValues o el value
     
     const isMounted = useRef(false);                              // Con useRef podemos crear un valor mutable que existe durante la vida útil de la instancia del componente.
-                                                                  // Con este valor controlaremos el useEffect que actualiza el estado del counter
+                                                                  // Con este valor evitaremos que se renderize el componente cuando no esté montado. Evitamos la doble renderización.
+
     const increaseBy = (value: number) => {                     
       
       let newValue = Math.max( counter + value, 0);               // newValue es el valor máximo entre 0 y el valor actual + el valor que se le pasa
@@ -30,13 +31,17 @@ export const useProduct = ( { onChange, product, value = 0, initialValues }:useP
       setCounter( initialValues?.count || value );
       
     }
-
+    
     useEffect(() => {
-      if ( !isMounted.current ) return;                       // Si el componente no está montado, no se ejecuta nada
-      else isMounted.current = true;                          // Si el componente está montado, se cambia el valor de isMounted a true
-      setCounter( value );                                    // Si si está montado el valor actual se actualiza con el valor que se le pasa
-    }, [value]);
+      isMounted.current = true;                                  // Cambiamos el valor de isMounted a true
+    }, []);
 
+    useEffect(() => {                                            // Cada vez que cambie el value del counter se ejecuta este useEffect
+      if (!isMounted.current) {                                  // Si el componente no esta montado no hago nada
+        return;
+      }
+      setCounter(value);                                         // Se actualiza si isMounted.current = true
+    }, [value]);                                                 // El value que recibo aquí es el nuevo valor que debería tener el state
 
 
   return (
@@ -48,4 +53,4 @@ export const useProduct = ( { onChange, product, value = 0, initialValues }:useP
       reset
     }
   )
-}// Resumiendo useProduct establece un valor al counter ligado al un value que depende del shoppingCart y este a su ves de increaseBy
+}// Resumiendo useProduct establece un valor al counter ligado al un value que depende del shoppingCart y este a su vez de increaseBy

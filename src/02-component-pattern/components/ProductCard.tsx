@@ -1,4 +1,4 @@
-import { createContext, ReactElement } from 'react';
+import { createContext } from 'react';
 import { useProduct } from '../hooks/useProduct';
 import { InitialValues, onChangeArgs, Product, ProductCardHandlers, ProductContextProps } from '../interfaces/interfaces';
 import styles from '../styles/styles.module.css';
@@ -16,17 +16,17 @@ export interface Props {                            // Interface para las Props 
   value?: number;
   initialValues?: InitialValues                         // Valores iniciales para el counter
   children: (args: ProductCardHandlers) => JSX.Element; // Función que se va a ejecutar para mostrar los elementos que se le pasan como children        
-}                                                       // sus argumentos son 
+}                                                        
 
-export const ProductCard = ({ children, product, className, style, onChange, value, initialValues }: Props ) => {
+export const ProductCard = ({ children, product, className, style, onChange, value, initialValues }: Props ) => { // Props del ProductCard desde el shoppingCart
 
   const { 
     counter, 
     increaseBy, 
     maxCount, 
     isMaxCountReached, 
-    reset } = useProduct({ onChange, product, value, initialValues }); 
-                                                                            
+    reset } = useProduct({ onChange, product, value, initialValues }); // Este hook usa las props de productCart y devuelve un objeto con valores
+                                                                       // y funciones para usar en los children a través de un provider.
   return (
     <Provider value={{
         counter, increaseBy, product, maxCount
