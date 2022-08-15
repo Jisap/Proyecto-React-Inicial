@@ -1,0 +1,75 @@
+[
+    {
+        "type":"input",
+        "name":"firstName",
+        "placeholder":"First Name",
+        "label":"First Name",
+        "value":"su",
+        "validations":[
+            {
+                "type":"required"
+            },
+            {
+                "type":"minLength",
+                "value":5
+            }
+        ]
+    },
+    {
+        "type": "input",
+        "name": "lastName",
+        "placeholder": "Lasst Name",
+        "label": "Last Name",
+        "value": "",
+        "validations": [
+            {
+                "type": "required"
+            }
+        ]
+    },
+    {
+        "type": "email",
+        "name": "email",
+        "placeholder": "Email",
+        "label": "Email",
+        "value": "",
+        "validations": [
+            {
+                "type": "required"
+            },
+            {
+                "type": "email"
+            }
+        ]
+
+    },
+    {
+        "type": "select",
+        "name": "favoriteGame",
+        "label": "Favorite Game",
+        "value": "",
+        "options": [
+            { 
+                "id":"1",
+                "label":"Super Smash"
+            },
+            {
+                "id":"2",
+                "label":"Street Fighter"
+            },
+            {
+                "id":"3",
+                "label":"Mortal Kombat"
+            },
+            {
+                "id":"4",
+                "label":"Street Fighter II"
+            } 
+        ],
+        "validations": [
+            {
+                "type": "required"
+            }
+        ]  
+    }
+]
